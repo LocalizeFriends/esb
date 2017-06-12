@@ -2,6 +2,7 @@ from __future__ import print_function
 from esb import app, require_method, register_consumer
 
 import zmq
+import requests
 
 @require_method('POST')
 def fcm_message_queue(request):
@@ -22,10 +23,10 @@ def fcm_message_queue(request):
 
 @require_method('POST')
 def fcm_message_statistics(request):
-    pass
+    requests.post('http://lfstats.ct8.pl/increment')
 
 register_consumer('fcm_message', fcm_message_queue)
-# register_consumer('fcm_message', fcm_message_statistics)
+register_consumer('fcm_message', fcm_message_statistics)
 
 if __name__ == '__main__':
     app.run()
